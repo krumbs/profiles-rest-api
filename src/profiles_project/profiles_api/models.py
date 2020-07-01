@@ -54,7 +54,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     # Set object manager
-    object = UserProfileManager()
+    objects = UserProfileManager()
 
     # Overwrite the username field from name to email (required by default)
     USERNAME_FIELD = 'email'

@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework import viewsets
 
 from . import serializers
+from . import models
 
 
 # Create your views here.
@@ -129,3 +130,12 @@ class HelloViewSet(viewsets.ViewSet):
         # Not implemented yet
 
         return Response({'http_method': 'DELETE'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading and updating"""
+
+    serializer_class = serializers.UserProfileSerializer
+
+    # how to retrieve the objects from the DB
+    queryset = models.UserProfile.objects.all()
