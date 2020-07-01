@@ -1,7 +1,10 @@
 from django.shortcuts import render
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
 from rest_framework import status
+from rest_framework import viewsets
 
 from . import serializers
 
@@ -19,10 +22,10 @@ class HelloAPIView(APIView):
         """Returns a list of APIView features."""
 
         an_apiview = [
-            'Uses HTTP methods as function (get, post, patch, put, delete)',
-            'It is similar to a tradional Django view',
-            'Gives you the most controle over your logic',
-            'Is mapped manually to URLs'
+            'Uses HTTP methods as function (get, post, patch, put, delete).',
+            'It is similar to a tradional Django view.',
+            'Gives you the most controle over your logic.',
+            'Is mapped manually to URLs.'
         ]
 
         return Response({'message': 'Hello', 'an_apiview': an_apiview})
@@ -63,3 +66,17 @@ class HelloAPIView(APIView):
         # NOT implemented yet
 
         return Response({'method': 'delete'})
+
+
+class HelloViewSet(viewsets.ViewSet):
+    """Test API ViewSet."""
+
+    def list(self, request):
+        """Returns a hello message."""
+
+        a_viewset = [
+            'Uses actions (list, create, retrieve, update, partial_update).',
+            'Automatically maps to URLs using Routers.',
+            'Provides more functionality with less code.'
+        ]
+        return Response({'message': 'Hello.', 'a_viewset': a_viewset})
