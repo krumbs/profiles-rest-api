@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
 
 from rest_framework import status
 from rest_framework import viewsets
@@ -146,3 +147,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     # Set the permissions tuple
     permission_classes = (permissions.UpdateOwnProfile,)
+
+    # Use inbuilt filters
+    filter_backends = (filters.SearchFilter,)
+
+    # Specify which fields we want the built-in  filters to be able
+    # to search by
+    search_fields = ('name', 'email',)
