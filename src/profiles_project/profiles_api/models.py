@@ -73,3 +73,20 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """For Django to convert object to a string."""
         return self.email
+
+
+class ProfileFeedItem(models.Model):
+    """Represent a feed/status item."""
+
+    # Create a foreign key to link UserProfile and ProfileFeedItem
+    user_profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
+
+    # Create a feed text field
+    feed_text = models.CharField(max_length=255)
+
+    # Create a datetime asssociated time created
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """Returns the model as a string."""
+        return self.feed_text
