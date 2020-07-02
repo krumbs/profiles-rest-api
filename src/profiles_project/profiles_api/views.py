@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework import filters
 from rest_framework import status
@@ -137,7 +138,7 @@ class HelloViewSet(viewsets.ViewSet):
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    """Handles creating, reading and updating"""
+    """Handles creating, reading and updating UserProfiles."""
 
     serializer_class = serializers.UserProfileSerializer
 
@@ -158,7 +159,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'email',)
 
 
-
 class LoginViewSet(viewsets.ViewSet):
     """Checks email and password and returns an auth token."""
 
@@ -168,3 +168,25 @@ class LoginViewSet(viewsets.ViewSet):
         """Uses the ObtainAuthToken APIView to validate and create a token."""
 
         return ObtainAuthToken().post(request)
+
+
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading and updating ProfileFeedItems."""
+
+
+    serializer_class = serializers.ProfileFeedItemSerializer
+
+    # How to retrieve the objects from the DB
+    queryset = models.ProfileFeedItem.objects.all()
+
+    # Set the authentication classes tuple
+    authentication_classes = (TokenAuthentication,)
+
+    # Set the permissions tuple
+    permission_classes = (permissions.UpdateOwnStatus, IsAuthenticated,)
+
+
+    def perform_create(self, serializer):
+        """Sets the user_profile key to the loggedin user."""
+
+        serializer.save(user_profile=self.request.user)

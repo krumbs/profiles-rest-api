@@ -22,6 +22,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'name',
             'password'
         )
+
         # Make sure the passwards are never read
         extra_kwargs = {
             'password': {'write_only': True}
@@ -39,3 +40,22 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    """A serializer for the ProfileFeedItem object."""
+
+    class Meta:
+        model = models.ProfileFeedItem
+        # Fields to include in this serializer
+        fields = (
+            'id',
+            'user_profile',
+            'feed_text',
+            'created_on'
+        )
+
+        # Make sure the foreign key cannot be created by the user
+        extra_kwargs = {
+            'user_profile': {'read_only': True}
+        }
